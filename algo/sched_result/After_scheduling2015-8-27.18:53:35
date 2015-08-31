@@ -1,0 +1,14 @@
+[SNAPSHOT] Current state:
+	Physical element [ cinder_1]:
+		(total) size:100
+		(used) size:70
+	Virtual elements:
+		 size:70[ST3] from tenant [tenant3]
+
+	Physical element [ cinder_2]:
+		(total) size:100
+		(used) size:90
+	Virtual elements:
+		 size:40[ST1] from tenant [tenant1]
+		 size:50[ST2] from tenant [tenant2]
+

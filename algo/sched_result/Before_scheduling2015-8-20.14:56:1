@@ -1,0 +1,15 @@
+[SNAPSHOT] Current state:
+	Physical element [ compute01.1]:
+		(total) RAM:31637 RootDisk:102 VCPUs:8
+		(used) RAM:2048 RootDisk:10 VCPUs:7
+	Virtual elements:
+		 RAM:1024 RootDisk:5 VCPUs:4[large] from tenant [55d4587933a4bd7173d7c277]
+		 RAM:1024 RootDisk:5 VCPUs:3[0] from tenant [55d45ae133a4bd7173d7c289]
+
+	Physical element [ compute02.1]:
+		(total) RAM:31637 RootDisk:102 VCPUs:8
+		(used) RAM:2048 RootDisk:10 VCPUs:7
+	Virtual elements:
+		 RAM:1024 RootDisk:5 VCPUs:2[123] from tenant [55d44f8733a4bd7173d7c230]
+		 RAM:1024 RootDisk:5 VCPUs:5[321123] from tenant [55d450e833a4bd7173d7c25c]
+

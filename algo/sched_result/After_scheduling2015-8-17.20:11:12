@@ -1,0 +1,32 @@
+[SNAPSHOT] Current state:
+	Physical element [ computer1]:
+		(total) RAM:8000 VCPUs:80
+		(used) RAM:1600 VCPUs:20
+	Virtual elements:
+		 RAM:400 VCPUs:5[VM1] from tenant [request1]
+		 RAM:400 VCPUs:5[VM1] from tenant [request3]
+		 RAM:400 VCPUs:5[VM1] from tenant [request4]
+		 RAM:400 VCPUs:5[VM1] from tenant [request5]
+
+	Physical element [ computer2]:
+		(total) RAM:10000 VCPUs:60
+		(used) RAM:1200 VCPUs:15
+	Virtual elements:
+		 RAM:400 VCPUs:5[VM2] from tenant [request1]
+		 RAM:400 VCPUs:5[VM2] from tenant [request2]
+
+	Physical element [ controller1]:
+		(total) size:20
+		(used) size:4
+	Virtual elements:
+		 size:1[ST1] from tenant [request1]
+		 size:1[ST1] from tenant [request3]
+		 size:1[ST1] from tenant [request4]
+		 size:1[ST1] from tenant [request5]
+
+	Physical element [ controller2]:
+		(total) size:15
+		(used) size:1
+	Virtual elements:
+		 size:1[ST2] from tenant [request2]
+

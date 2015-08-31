@@ -1,0 +1,87 @@
+[SNAPSHOT] Current state:
+	Physical element [ computer1]:
+		(total) RAM:8000 VCPUs:80
+		(used) RAM:4600 VCPUs:80
+	Virtual elements:
+		 RAM:1000 VCPUs:20[VM17] from tenant [newrequest1]
+		 RAM:1000 VCPUs:20[VM22] from tenant [newrequest6]
+		 RAM:400 VCPUs:5[VM11] from tenant [request11]
+		 RAM:400 VCPUs:5[VM12] from tenant [request12]
+		 RAM:1000 VCPUs:20[VM13] from tenant [request13]
+		 RAM:400 VCPUs:5[VM5] from tenant [request5]
+		 RAM:400 VCPUs:5[VM6] from tenant [request6]
+
+	Physical element [ computer2]:
+		(total) RAM:10000 VCPUs:60
+		(used) RAM:3000 VCPUs:60
+	Virtual elements:
+		 RAM:1000 VCPUs:20[VM21] from tenant [newrequest5]
+		 RAM:1000 VCPUs:20[VM23] from tenant [newrequest7]
+		 RAM:1000 VCPUs:20[VM14] from tenant [request14]
+
+	Physical element [ computer3]:
+		(total) RAM:8000 VCPUs:80
+		(used) RAM:4600 VCPUs:80
+	Virtual elements:
+		 RAM:1000 VCPUs:20[VM19] from tenant [newrequest3]
+		 RAM:1000 VCPUs:20[VM20] from tenant [newrequest4]
+		 RAM:400 VCPUs:5[VM10] from tenant [request10]
+		 RAM:1000 VCPUs:20[VM15] from tenant [request15]
+		 RAM:400 VCPUs:5[VM7] from tenant [request7]
+		 RAM:400 VCPUs:5[VM8] from tenant [request8]
+		 RAM:400 VCPUs:5[VM9] from tenant [request9]
+
+	Physical element [ computer4]:
+		(total) RAM:10000 VCPUs:60
+		(used) RAM:3600 VCPUs:60
+	Virtual elements:
+		 RAM:1000 VCPUs:20[VM18] from tenant [newrequest2]
+		 RAM:400 VCPUs:5[VM1] from tenant [request1]
+		 RAM:1000 VCPUs:20[VM16] from tenant [request16]
+		 RAM:400 VCPUs:5[VM2] from tenant [request2]
+		 RAM:400 VCPUs:5[VM3] from tenant [request3]
+		 RAM:400 VCPUs:5[VM4] from tenant [request4]
+
+	Physical element [ controller1]:
+		(total) size:20
+		(used) size:5
+	Virtual elements:
+		 size:1[ST1] from tenant [request1]
+		 size:1[ST11] from tenant [request11]
+		 size:1[ST12] from tenant [request12]
+		 size:1[ST13] from tenant [request13]
+		 size:1[ST5] from tenant [request5]
+
+	Physical element [ controller2]:
+		(total) size:15
+		(used) size:9
+	Virtual elements:
+		 size:1[ST17] from tenant [newrequest1]
+		 size:1[ST18] from tenant [newrequest2]
+		 size:1[ST19] from tenant [newrequest3]
+		 size:1[ST20] from tenant [newrequest4]
+		 size:1[ST21] from tenant [newrequest5]
+		 size:1[ST22] from tenant [newrequest6]
+		 size:1[ST23] from tenant [newrequest7]
+		 size:1[ST14] from tenant [request14]
+		 size:1[ST6] from tenant [request6]
+
+	Physical element [ controller3]:
+		(total) size:20
+		(used) size:5
+	Virtual elements:
+		 size:1[ST10] from tenant [request10]
+		 size:1[ST15] from tenant [request15]
+		 size:1[ST7] from tenant [request7]
+		 size:1[ST8] from tenant [request8]
+		 size:1[ST9] from tenant [request9]
+
+	Physical element [ controller4]:
+		(total) size:15
+		(used) size:4
+	Virtual elements:
+		 size:1[ST16] from tenant [request16]
+		 size:1[ST2] from tenant [request2]
+		 size:1[ST3] from tenant [request3]
+		 size:1[ST4] from tenant [request4]
+
