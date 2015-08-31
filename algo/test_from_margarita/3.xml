@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dcxml>
+  <resources>
+    <server name="compute02.1" data_center="arccn-old">
+      <connection_set number_of_ports="1">
+        <port name="compute02_port_01"/>
+      </connection_set>
+      <parameter_set>
+        <parameter parameter_name="VCPUs" parameter_type="integer" parameter_value="8"/>
+        <parameter parameter_name="RAM" parameter_type="integer" parameter_value="31637"/>
+        <parameter parameter_name="RootDisk" parameter_type="integer" parameter_value="102"/>
+      </parameter_set>
+    </server>
+    <server name="compute01.1" data_center="arccn-old">
+      <connection_set number_of_ports="1">
+        <port name="compute01_port_01"/>
+      </connection_set>
+      <parameter_set>
+        <parameter parameter_name="VCPUs" parameter_type="integer" parameter_value="8"/>
+        <parameter parameter_name="RAM" parameter_type="integer" parameter_value="31637"/>
+        <parameter parameter_name="RootDisk" parameter_type="integer" parameter_value="102"/>
+      </parameter_set>
+    </server>
+    <storage name="cinder.2" data_center="arccn-old">
+      <connection_set number_of_ports="1">
+        <port name="cinder_port_02"/>
+      </connection_set>
+      <parameter_set>
+        <parameter parameter_name="size" parameter_type="real" parameter_value="108.06"/>
+      </parameter_set>
+    </storage>
+    <storage name="controller01.2" data_center="arccn-old">
+      <connection_set number_of_ports="1">
+        <port name="controller01_port_02"/>
+      </connection_set>
+      <parameter_set>
+        <parameter parameter_name="size" parameter_type="real" parameter_value="366.94"/>
+      </parameter_set>
+    </storage>
+    <netelement name="ROUTER.3" data_center="arccn-old" netelement_type="Router" is_router="1" ip="0.0.0.0">
+      <connection_set number_of_ports="2">
+        <port name="ROUTER_port_0"/>
+        <port name="ROUTER_port_1"/>
+      </connection_set>
+      <parameter_set/>
+    </netelement>
+    <netelement name="SW1.3" data_center="arccn-old" netelement_type="Switch" is_router="0" ip="">
+      <connection_set number_of_ports="4">
+        <port name="SW1_port_0"/>
+        <port name="SW1_port_1"/>
+        <port name="SW1_port_2"/>
+        <port name="SW1_port_3"/>
+      </connection_set>
+      <parameter_set/>
+    </netelement>
+    <netelement name="SW2.3" data_center="arccn-old" netelement_type="Switch" is_router="0" ip="">
+      <connection_set number_of_ports="4">
+        <port name="SW2_port_0"/>
+        <port name="SW2_port_1"/>
+        <port name="SW2_port_2"/>
+        <port name="SW2_port_3"/>
+      </connection_set>
+      <parameter_set/>
+    </netelement>
+    <link capacity="1.0" data_center="arccn-old" node1="ROUTER.3" node2="SW1.3" port1="ROUTER_port_0" port2="SW1_port_0"/>
+    <link capacity="1.0" data_center="arccn-old" node1="ROUTER.3" node2="SW2.3" port1="ROUTER_port_1" port2="SW2_port_0"/>
+    <link capacity="1.0" data_center="arccn-old" node1="SW1.3" node2="SW2.3" port1="SW1_port_1" port2="SW2_port_1"/>
+    <link capacity="1.0" data_center="arccn-old" node1="SW1.3" node2="compute01.1" port1="SW1_port_2" port2="compute01_port_01"/>
+    <link capacity="1.0" data_center="arccn-old" node1="SW1.3" node2="controller01.2" port1="SW1_port_3" port2="controller01_port_02"/>
+    <link capacity="1.0" data_center="arccn-old" node1="SW2.3" node2="compute02.1" port1="SW2_port_2" port2="compute02_port_01"/>
+    <link capacity="1.0" data_center="arccn-old" node1="SW2.3" node2="cinder.2" port1="SW2_port_3" port2="cinder_port_02"/>
+  </resources>
+  <tenants>
+    <tenant data_center="arccn-old" expiration_time="2016-08-19 12:25:55" name="55d44f8733a4bd7173d7c230" tenant_type="0">
+      <list_of_nodes>
+        <netelement name="123_sw" service="False" data_center="arccn-old" assignedTo="" uuid="e01cc850-f118-4bb6-a5e4-1cadcdf9a264" is_router="0" ip="192.168.100.0/24" external_port="" netelement_type="Switch">
+          <connection_set number_of_ports="1">
+            <port name="55d44fa133a4bd7173d7c231"/>
+          </connection_set>
+          <parameter_set/>
+        </netelement>
+        <vm name="123" service="False" data_center="arccn-old" assignedTo="compute02.1" uuid="32a54438-8de6-41e0-bbc1-b77ca9a779a2" image_id="14470ee8-f95d-4fda-85a0-492aa5956da9" floating_ip="">
+          <connection_set number_of_ports="1">
+            <port name="55d4b0c633a4bd718274cf70"/>
+          </connection_set>
+          <parameter_set>
+            <parameter parameter_name="VCPUs" parameter_type="integer" parameter_value="2"/>
+            <parameter parameter_name="RAM" parameter_type="integer" parameter_value="1024"/>
+            <parameter parameter_name="RootDisk" parameter_type="integer" parameter_value="5"/>
+          </parameter_set>
+        </vm>
+      </list_of_nodes>
+      <list_of_links>
+        <link capacity="1.0" node1="123" node2="123_sw" port1="55d4b0c633a4bd718274cf70" port2="55d44fa133a4bd7173d7c231"/>
+      </list_of_links>
+    </tenant>
+    <tenant data_center="arccn-old" expiration_time="2016-08-19 12:25:55" name="55d450e833a4bd7173d7c25c" tenant_type="0">
+      <list_of_nodes>
+        <vm name="321123" service="False" data_center="arccn-old" assignedTo="compute02.1" uuid="62bab858-1658-4bc6-845f-496311230a66" image_id="14470ee8-f95d-4fda-85a0-492aa5956da9" floating_ip="">
+          <connection_set number_of_ports="1">
+            <port name="55d4b65333a4bd794c011ddb"/>
+          </connection_set>
+          <parameter_set>
+            <parameter parameter_name="VCPUs" parameter_type="integer" parameter_value="5"/>
+            <parameter parameter_name="RAM" parameter_type="integer" parameter_value="1024"/>
+            <parameter parameter_name="RootDisk" parameter_type="integer" parameter_value="5"/>
+          </parameter_set>
+        </vm>
+        <netelement name="321123_sw" service="False" data_center="arccn-old" assignedTo="" uuid="a094ae4c-6caf-429b-8872-d45db9f5afa8" is_router="0" ip="192.168.100.0/24" external_port="" netelement_type="Switch">
+          <connection_set number_of_ports="1">
+            <port name="55d4831433a4bd6cbfe6ea29"/>
+          </connection_set>
+          <parameter_set/>
+        </netelement>
+      </list_of_nodes>
+      <list_of_links>
+        <link capacity="1.0" node1="321123" node2="321123_sw" port1="55d4b65333a4bd794c011ddb" port2="55d4831433a4bd6cbfe6ea29"/>
+      </list_of_links>
+    </tenant>
+    <tenant data_center="arccn-old" expiration_time="2016-08-19 12:25:55" name="55d4587933a4bd7173d7c277" tenant_type="0">
+      <list_of_nodes>
+        <netelement name="large_sw" service="False" data_center="arccn-old" assignedTo="" uuid="f_5de4515f-4347-4c6e-b74f-3420eb8de511" is_router="False" ip="192.168.100.0/24" external_port="" netelement_type="Switch">
+          <connection_set number_of_ports="1">
+            <port name="55d4588a33a4bd7173d7c278"/>
+          </connection_set>
+          <parameter_set/>
+        </netelement>
+        <vm name="large" service="False" data_center="arccn-old" assignedTo="" uuid="f_b0476495-ab56-482a-ae59-c49fe35baf3e" image_id="14470ee8-f95d-4fda-85a0-492aa5956da9" floating_ip="">
+          <connection_set number_of_ports="1">
+            <port name="55d4bd4a33a4bd1726bc6593"/>
+          </connection_set>
+          <parameter_set>
+            <parameter parameter_name="VCPUs" parameter_type="integer" parameter_value="4"/>
+            <parameter parameter_name="RAM" parameter_type="integer" parameter_value="1024"/>
+            <parameter parameter_name="RootDisk" parameter_type="integer" parameter_value="5"/>
+          </parameter_set>
+        </vm>
+      </list_of_nodes>
+      <list_of_links>
+        <link capacity="1.0" node1="large" node2="large_sw" port1="55d4bd4a33a4bd1726bc6593" port2="55d4588a33a4bd7173d7c278"/>
+      </list_of_links>
+    </tenant>
+  </tenants>
+</dcxml>

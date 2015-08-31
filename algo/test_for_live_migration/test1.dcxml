@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<dcxml name="">
+	<resources migration_time="100000">
+		<storage name="cinder_1" service="0">
+			<connection_set number_of_ports="1">
+				<port name="cinder_1_port_0"/>
+			</connection_set>
+			<parameter_set>
+				<parameter parameter_name="size" parameter_type="real" parameter_value="100"/>
+			</parameter_set>
+		</storage>
+		<netelement is_router="0" name="SW1">
+			<connection_set number_of_ports="2">
+				<port name="SW1_port_0"/>
+				<port name="SW1_port_1"/>
+			</connection_set>
+			<parameter_set/>
+		</netelement>
+		<storage name="cinder_2" service="0">
+			<connection_set number_of_ports="1">
+				<port name="cinder_2_port_0"/>
+			</connection_set>
+			<parameter_set>
+				<parameter parameter_name="size" parameter_type="real" parameter_value="100"/>
+			</parameter_set>
+		</storage>
+		
+		<link channel_capacity="10" node1="SW1" node2="cinder_1" port1="SW1_port_0" port2="cinder_1_port_0" service="0"/>
+		<link channel_capacity="10" node1="SW1" node2="cinder_2" port1="SW1_port_1" port2="cinder_2_port_0" service="0"/>
+	</resources>
+	<tenants>
+		<tenant name="tenant1">
+			<list_of_nodes>
+				<st name="ST1" assignedTo="cinder_1">
+					<connection_set number_of_ports="1">
+						<port name="ST1_port_0"/>
+					</connection_set>
+					<parameter_set>
+						<parameter parameter_name="size" parameter_type="real" parameter_value="40"/>
+					</parameter_set>
+				</st>
+			</list_of_nodes>
+			<list_of_links/>
+		</tenant>
+		<tenant name="tenant2">
+			<list_of_nodes>
+				<st name="ST2" assignedTo="cinder_2">
+					<connection_set number_of_ports="1">
+						<port name="ST2_port_0"/>
+					</connection_set>
+					<parameter_set>
+						<parameter parameter_name="size" parameter_type="real" parameter_value="50"/>
+					</parameter_set>
+				</st>
+			</list_of_nodes>
+			<list_of_links/>
+		</tenant>
+		<tenant name="tenant3">
+			<list_of_nodes>
+				<st name="ST3">
+					<connection_set number_of_ports="1">
+						<port name="ST3_port_0"/>
+					</connection_set>
+					<parameter_set>
+						<parameter parameter_name="size" parameter_type="real" parameter_value="70"/>
+					</parameter_set>
+				</st>
+			</list_of_nodes>
+			<list_of_links/>
+		</tenant>
+	</tenants>
+</dcxml>

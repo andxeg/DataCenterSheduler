@@ -1,4 +1,4 @@
-# Install script for directory: /home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo
+# Install script for directory: /home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,11 +34,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/prototype/cmake_install.cmake")
-  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/interface/cmake_install.cmake")
-  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/routing/cmake_install.cmake")
-  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/trans/cmake_install.cmake")
-  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/common/cmake_install.cmake")
+  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/prototype/cmake_install.cmake")
+  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/interface/cmake_install.cmake")
+  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/routing/cmake_install.cmake")
+  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/trans/cmake_install.cmake")
+  include("/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/common/cmake_install.cmake")
 
 endif()
 
@@ -48,7 +48,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/ЧупахинАА_321/algo/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()

@@ -91,39 +91,61 @@ bool ExhaustiveSearcher::makeAttempt() {
     
     assignmentPack.insert(target);
     if ( performGreedyAssignment(assignmentPack, cortege) ) {
-        if ( updatePathes(assignmentPack) ) {
-	    /*TODO:
-	     * Migration plan
-	     * Task for Transmission -> {Ti} = < e, s, d >
-	     * Transmission -> {TRi} = < T, ts, tp, {Li}, tunnel >
-	     * {Li} is a set of physical links for migration
-	     * tunnel is a virtual channel for migration
-		*/
-	    //
-	    assignmentPack.erase(target);
+	
+	if ( updatePathes(assignmentPack) ) {
+        /*NOW WORK:
+          * Migration plan
+          * Task for Transmission -> {Ti} = < e, s, d >
+          * Transmission -> {TRi} = < T, ts, tp, {Li}, tunnel >
+          * {Li} is a set of physical links for migration
+          * tunnel is a virtual channel for migration
+          */
+	      
+	    //Перед миграцией target пока никуда не назначена
+        assignmentPack.erase(target);
+        Element * targetAssignee = target->getAssignee();
+        target->unassign();
+        //
+
 	    Assignments newAssignment = getNewAssignment(assignmentPack);
 	    Transmissions transmissions = getTransmissions(cache, newAssignment);
+
+        //27 aug 2015 14:08
+        //After performGreedyAssignment all virtual elements are situated on the destination physical elements
+        //But before migration they must be on the source physical elements
+        Operation::forEach(assignmentPack, Operation::unassign);
+        for ( Assignments::iterator i = cache.begin(); i != cache.end(); i++) {
+            if ( i->second->assign(i->first) == false )
+                printf("Error in migration preparation\n");
+        }
+        //
+
 	    Migration migration(network, transmissions, resources, tenantsElements);
 	    if ( !migration.isValid()) {
-		printf("There are not any transmissions with source != destination\n");
-		return true;
+            printf("There are not any transmissions with source != destination\n");
+            return true;
 	    }
 	    
 	    migration.print();
 	    
 	    if ( migration.createMigrationPlan() ) {
-		migration.print();
-		return true;
+            //Миграция завершилась корректно, следовательно, можно назначать target
+            if ( targetAssignee->assign(target) == false )
+                printf("Error while assign target after creation migration plan");
+            migration.print();
+            return true;
 	    }
 	    
-	    //Если миграция невозможна, следователльно,  откатываемся к предыдущему назначению
+	    //Если миграция невозможна, следовательно, откатываемся к предыдущему назначению
 	    printf("Migration is impossible\n");
             //
 	}
 	//если обновить пути не удалось, следовательно, отказываемся от назначения, которое было
 	//предоставлено методом performGreedyAssignment
 	assignmentPack.insert(target);//возвращаем рассматриваемый элемент, так как его назначение тоже нужно удалить
+	
 	Operation::forEach(assignmentPack, Operation::unassign);
+	
     }
     
     for(Assignments::iterator i = cache.begin(); i != cache.end(); i++ ) 
@@ -188,24 +210,57 @@ bool ExhaustiveSearcher::performGreedyAssignment(Elements & t, Elements & p) {
     std::vector<Element *> targets(t.begin(), t.end());
     std::vector<Element *> physical(p.begin(), p.end());
     std::sort(targets.begin(), targets.end(), Criteria::elementWeightDescending);
-    std::sort(physical.begin(), physical.end(), Criteria::elementWeightDescending);
+    std::sort(physical.begin(), physical.end(), Criteria::elementWeightAscending);
+    
+    printf("\n[PerformGreedyAssignment] START\n");
+    printf("Virtual elements\n");
+    for ( uint virtElem = 0; virtElem < targets.size(); virtElem ++ ) {
+	std::vector< std::string > assignInfo = tenantsElements[targets[virtElem]];
+	printf("\tTenant -> [%s]; Element -> [%s]\n", assignInfo[0].c_str(), assignInfo[1].c_str());
+    }
+    
+    printf("Physical elements\n");
+    for ( uint physElem = 0; physElem < physical.size(); physElem ++ ) {
+	printf("\tPhysical element -> [%s]\n", resources[physical[physElem]].c_str());
+    }
+    
+    printf("\n\n");
+    
     for(vector<Element *>::iterator i = targets.begin(); i != targets.end(); i++) {
         Element * element = *i;
+	
+	printf("Current element->[%s] from tenant [%s]\n", tenantsElements[element][1].c_str(), tenantsElements[element][0].c_str());
+	
         bool result;
         for (vector<Element *>::iterator j = physical.begin(); j != physical.end(); j++) {
             Element * assignee = *j;
             result = assignee->assign(element);
-            if ( result )
+            if ( result ) {
+		printf("Current element was assigned on [%s]\n", resources[assignee].c_str());    
                 break;
+	    }
         }
+        
         if ( !result ) {
             Operation::forEach(t, Operation::unassign);
+	    printf("Current element was not assigned\n");
+	    printf("\n[PerformGreedyAssignment] END\n");
             return false;
         }
 
-        std::sort(physical.begin(), physical.end(), Criteria::elementWeightDescending);
+        std::sort(physical.begin(), physical.end(), Criteria::elementWeightAscending);
+	
+	
+	printf("Physical elements after assignment\n");
+	for ( uint physElem = 0; physElem < physical.size(); physElem ++ ) {
+		printf("\tPhysical element -> [%s]\n", resources[physical[physElem]].c_str());
+	}
+	
+	printf("\n\n");
+	
     }
 
+    printf("\n[PerformGreedyAssignment] END\n");
     return true;;
 }
 

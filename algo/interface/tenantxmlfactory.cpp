@@ -143,11 +143,7 @@ void TenantXMLFactory::readAssignmentData(const ResourcesXMLFactory& resourceFac
         Element * assignment = getElement(a);
         Element * assignee = resourceFactory.getElement(data[a]);
         if ( assignee->assign(assignment) ) {
-		//assignment is a virtual element
-		//qDebug() << "Before readAssignmentDataAttributes( assignment )";
 		readAssignmentDataAttributes( assignment );
-		//qDebug() << "After readAssignmentDataAttributes( assignment )";
-		//
 		continue;
 	}
 

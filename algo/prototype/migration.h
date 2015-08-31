@@ -113,7 +113,8 @@ void Migration::printMigrationLinks(Transmission * task) {
 bool Migration::isValid() {
 	if ( tasks.empty() ) return false;
 	for ( uint i = 0; i < tasks.size(); i++) {
-		if ( tasks[i]->isValid() ) return true;
+		if ( tasks[i]->isValid() )
+			return true;
 	}
 	return false;
 }
@@ -142,9 +143,18 @@ bool Migration::createMigrationPlan() {
 		queue.pop_front();
 		
 		while ( observeTime!=currentTime ) {
-			Transmissions currentExecute= findCurrentExecute(tasks, observeTime);//{1}
+			Transmissions currentExecute = findCurrentExecute(tasks, observeTime);//{1}
 			createGraphRemainderResources(currentExecute);//{2} 
-			
+
+			//Проверяем, есть ли место на destination для виртуального элемента
+			//Если нет, то пропускаем самую ближайшую работу
+			if ( candidate->destination->canHostAssignment(candidate->target) == false ) {
+				freeGraphRemainderResources(currentExecute);//{4}
+				observeTime = findNearestTransmissionEnd(currentExecute, observeTime);//{5}
+				continue;
+			}
+			//
+
 			if ( DijkstraAlgorithm::findPath(network, candidate, totalWeight, observeTime) == false ) {//{3}
 				freeGraphRemainderResources(currentExecute);//{4}
 				//так как нам скорее всего мешает одна работа из currentExecute,
@@ -176,6 +186,8 @@ bool Migration::createMigrationPlan() {
 					//printf("time->%u\n", time);
 					Transmissions currExec=findCurrentExecute(intersectingTasks, time);
 					createGraphRemainderResources(currExec);
+					//Проверяем, есть ли место на destination для виртуального элемента
+					//Также проверяем доступную пропускную способность канала
 					if ( checkMigration(network, candidate) == false ) {//{9}
 						clearCandidate( candidate );
 						freeGraphRemainderResources(currExec);
@@ -194,6 +206,8 @@ bool Migration::createMigrationPlan() {
 			q1 = queue;
 			l = queue.size();
 			currentTime = updateCurrentTime(tasks);//{10} текущее время - это конец самого позднего перемещения
+			candidate->target->unassign();
+			candidate->destination->assign(candidate->target);
 			break;
 		}
 		
@@ -205,6 +219,15 @@ bool Migration::createMigrationPlan() {
 		//по предположению, если нет никаких перемещений, следовательно, все 
 		//сетевые ресурсы свободны => следить нужно только за Tdir
 		// в данной точке программы network - это граф до начала миграции
+		//!!!
+		//Но для начала нужно проверить, есть ли место для виртуального элемента на destination
+		if ( candidate->destination->canHostAssignment( candidate->target ) == false ) {
+			queue.push_back( candidate );
+			l = l - 1;
+			continue;
+		}
+		//
+
 		if ( DijkstraAlgorithm::findPath(network, candidate, totalWeight, observeTime) == false ) {
 			queue.push_back( candidate );
 			l = l - 1;
@@ -220,11 +243,14 @@ bool Migration::createMigrationPlan() {
 			//даже при обладании всех сетевых ресурсов
 			return false;
 		}
-		
-		//если умещаемся в Tdir, то обновляем очередь и текущее время
+
+
+		//если умещаемся в Tdir, то обновляем очередь и текущее время, а также меняем назначение candidate на новое
 		q1 = queue;
 		l = queue.size();
 		currentTime = updateCurrentTime(tasks);
+		candidate->target->unassign();
+		candidate->destination->assign(candidate->target);
 		//можно прибавить candidate->duration к текущему времени, чтобы получить новое currentTime,
 		//так как он все равно встал в конец расписания
 		continue;
@@ -270,11 +296,20 @@ Transmissions Migration::findCurrentExecute(Transmissions & transmissions, const
 }
 
 void Migration::createGraphRemainderResources(Transmissions & currentExecute) {
-	for ( uint i = 0; i < currentExecute.size(); i++) {
+	for ( uint i = 0; i < currentExecute.size(); i++ ) {
 		OrderedElements links = currentExecute[i]->migrationLinks;
 		Element * tun = currentExecute[i]->tunnel;
 		for ( OrderedElements::iterator j = links.begin(); j != links.end(); j++ )
 			(*j)->toLink()->assignLink(tun);
+		//Для мигрирующих элементов виртуальный элемент должен находиться и на source, и на destination
+		//Метод assign не назначает заново виртуальный элемент, если он был назначен ранее
+		//Метод unassign тоже отрабатывает коррректно, даже если виртуальный элемент никуда не был назначен
+		Element * destination = currentExecute[i]->destination;
+		Element * source = currentExecute[i]->source;
+		Element * target = currentExecute[i]->target;
+		if ( destination->assign( target ) == false || source->assign( target ) == false )
+			printf("Error while assign in Migration::CreateGraphRemainderResources");
+		//
 	}
 }
 
@@ -284,6 +319,22 @@ void Migration::freeGraphRemainderResources(Transmissions & currentExecute) {
 		Element * tun = currentExecute[i]->tunnel;
 		for ( OrderedElements::iterator j = links.begin(); j != links.end(); j++ )
 			(*j)->toLink()->unassignLink(tun);
+		//Если у виртуального элемента migrationLinks != 0 ,следовательно, его оставляем на destination,
+		//иначе - на source, так как он еще не смигрировал
+		Element * destination = currentExecute[i]->destination;
+		Element * source = currentExecute[i]->source;
+		Element * target = currentExecute[i]->target;
+		OrderedElements migrationLinks = currentExecute[i]->migrationLinks;
+		if ( migrationLinks.size() == 0 ) {
+			target->unassign();
+			if ( source -> assign( target ) == false )
+				printf("Error while assign in Migration::freeGraphRemainderResources");
+		} else {
+			target->unassign();
+			if ( destination -> assign( target ) == false )
+				printf("Error while assign in Migration::freeGraphRemainderResources");
+		}
+		//
 	}
 }
 
@@ -355,6 +406,10 @@ bool Migration::compareIntersectingTasks(Transmission * first, Transmission * se
 bool Migration::checkMigration(Network * network, Transmission * candidate) {
 	OrderedElements links = candidate->migrationLinks;
 	Element * tun = candidate->tunnel;
+
+	if ( candidate->destination->canHostAssignment(candidate->target) == false )
+		return false;
+
 	for ( OrderedElements::iterator j = links.begin(); j != links.end(); j++ )
 		if ( (*j)->toLink()->canHostAssignment(tun) == false )
 			return false;

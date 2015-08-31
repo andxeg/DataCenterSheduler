@@ -1,2 +1,0 @@
-/usr/bin/ar cq libinterface.a  CMakeFiles/interface.dir/factory.cpp.o CMakeFiles/interface.dir/snapshot.cpp.o CMakeFiles/interface.dir/resourcesxmlfactory.cpp.o CMakeFiles/interface.dir/elementfactory.cpp.o CMakeFiles/interface.dir/tenantxmlfactory.cpp.o CMakeFiles/interface.dir/export.cpp.o CMakeFiles/interface.dir/interface_automoc.cpp.o
-/usr/bin/ranlib libinterface.a

@@ -59,6 +59,10 @@ public:
         return virtualResource == availablePhysicalResource;
     }
 
+    std::string getName() const {
+         return name;
+    }
+    
     /*
      * Check whether the resource is countable, i.e. we can decrease/increase it's value
      */

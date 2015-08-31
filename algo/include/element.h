@@ -3,6 +3,8 @@
 #include "defs.h"
 #include "parameter.h"
 #include "interface/export.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 class Element {
     friend class ElementFactory;
@@ -112,6 +114,72 @@ public:
     	parameters[type] = value;
     }
 
+    std::map<std::string, double> getParametersUsed() {
+	std::map<std::string, double> result;
+	if (!physical) {
+		Parameters::iterator vpBegin = parameters.begin();
+		Parameters::iterator vpEnd = parameters.end();
+		for ( Parameters::iterator param = vpBegin; param != vpEnd; param++ ) {
+			std::string paramName = param->first->getName();
+			double paramValue = param->second->weight();
+			result[paramName] = paramValue;
+		}
+		return result;
+	}
+	
+	Parameters::iterator firstParam = parameters.begin();
+        Parameters::iterator lastParam = parameters.end();
+
+        for (Parameters::iterator param = firstParam; param != lastParam; param++ ) {
+            result[param->first->getName()] = 0.0;
+        }
+	
+	Elements::iterator first = assignments.begin();
+	for ( Elements::iterator virtElem = first; virtElem != assignments.end(); virtElem++ ) {
+		std::map<std::string, double> virtElemParameters = (*virtElem)->getParametersUsed();
+		std::map<std::string, double>::iterator firstParam = virtElemParameters.begin();
+		std::map<std::string, double>::iterator lastParam = virtElemParameters.end();
+		for ( std::map<std::string, double>::iterator param = firstParam; param != lastParam; param++ ) {
+			std::string paramName = param->first;
+			double paramValue = param->second;
+			//printf("\t\t\t\t%f",result[paramName]);
+			result[paramName] += paramValue;
+		}
+	}
+	
+	return result;
+    }
+    
+    std::map<std::string, double> getParametersTotal() {
+        std::map<std::string, double> result;
+	if (!physical)
+		return getParametersUsed();
+	
+	//Physical resources
+	//The remaining resources
+	Parameters::iterator phBegin = parameters.begin();
+	Parameters::iterator phEnd = parameters.end();
+	for ( Parameters::iterator param = phBegin; param != phEnd; param++ ) {
+		std::string paramName = param->first->getName();
+		double paramValue = param->second->weight();
+		result[paramName] = paramValue;
+	}
+	
+	//Used resources
+	std::map<std::string, double> usedResources = getParametersUsed();
+	std::map<std::string, double>::iterator firstParam = usedResources.begin();
+	std::map<std::string, double>::iterator lastParam = usedResources.end();
+	for ( std::map<std::string, double>::iterator param = firstParam; param != lastParam; param++ ) {
+		std::string paramName = param->first;
+		double paramValue = param->second;
+		if ( result.find(paramName) != result.end() )
+				result[paramName] += paramValue;
+	}
+	
+	return result;
+    }
+    
+
     Element * getAssignee() const {
         return assignee;
     }
@@ -124,6 +192,9 @@ public:
         if ( !canHostAssignment(other) )
           return false;
 
+        Elements::iterator a = assignments.find(other);
+        if ( a != assignments.end() )
+            return true;
 
         decreaseResources(other);
         

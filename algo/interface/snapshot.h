@@ -19,6 +19,7 @@ class QDomDocument;
 class Snapshot {
 public:
     typedef QMap<QString, QMap<QString, QString> > Assignments;
+    typedef QMap<QString, std::vector< std::vector< std::string> > > AssignmentsInfo;
 public:
     Snapshot();
     ~Snapshot();
@@ -29,8 +30,9 @@ public:
     Network * getNetwork() const;
     Requests getRequests() const;
     Assignments parseReverseAssignments() const; 
+    AssignmentsInfo getAssignmentsInfo() const;
 
-    void print();
+    void print(std::string comment);
 
     Element * getNetworkElement(const QString & name) const;
     Element * getTenantElement(const QString & tenant, const QString & name) const;

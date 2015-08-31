@@ -7,7 +7,6 @@ PROJECT(algo)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}
       include/
       )
-
 find_package( Qt5Core REQUIRED )
 
 SET ( COMPONENTS

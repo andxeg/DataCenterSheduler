@@ -1,8 +1,0 @@
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/CMakeFiles/algo.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/trans/CMakeFiles/trans.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/routing/CMakeFiles/routing.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/CMakeFiles/tr.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/common/CMakeFiles/common.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/prototype/CMakeFiles/prototype.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/interface/CMakeFiles/interface.dir
-/home/andrew/Dropbox/Курсовая/Оглавление_и_содержание_2015/algo/DataCenters-rtc/algo/interface/CMakeFiles/interface_automoc.dir
